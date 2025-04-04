@@ -1,68 +1,75 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Separator } from "@radix-ui/react-separator";
-import { SendHorizontal } from "lucide-react";
+import { Bolt, CircleAlert, LogOut, Menu, SendHorizontal } from "lucide-react";
 import Image from "next/image";
+import { Suspense } from "react";
+import { SendTry } from "./form";
+import { ListAttempts } from "./listAttempts";
+import { Tips } from "./tips";
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-4">
-      {/* Avatar */}
+    <div className="h-screen flex flex-col gap-4">
+      <div className="flex items-center justify-between mt-3">
+        <Sheet>
+          <SheetTrigger>
+            <Menu size={30} className="cursor-pointer" />
+          </SheetTrigger>
 
-      <div className="flex items-center gap-2.5 mt-2.5">
-        <Input
-          className="h-12 md:text-2xl"
-          type="text"
-          placeholder="Digite o nome do Pokémon"
-        />
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Detalhes</SheetTitle>
+            </SheetHeader>
 
-        <Button
-          variant="outline"
-          size="lg"
-          className="cursor-pointer h-12 text-4xl"
-        >
-          <SendHorizontal size={26} />
-        </Button>
+            <div className="flex flex-col gap-5 mx-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Button variant="outline" className="cursor-pointer w-max">
+                  <span className="text-slate-400">Como Jogar</span>
+                  <CircleAlert size={25} className="text-slate-400" />
+                </Button>
+
+                <Button variant="outline" className="cursor-pointer w-max">
+                  <span className="text-slate-400">Configurações</span>
+                  <Bolt size={25} className="text-slate-400" />
+                </Button>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+
+        <LogOut className="cursor-pointer" size={25} />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <div className="w-full flex items-center gap-2.5">
-          <Separator
-            orientation="horizontal"
-            className="bg-slate-700 h-[1px] w-6/12"
-          />
+      <SendTry />
 
-          <strong>Tentativas</strong>
+      <div className="flex-1 flex flex-col gap-2">
+        {/* <Suspense
+          fallback={
+            <div className="flex-1 flex items-center justify-center">
+              Loading...
+            </div>
+          }
+        >
+          <Tips />
+        </Suspense> */}
 
-          <Separator
-            orientation="horizontal"
-            className="bg-slate-700 h-[1px] w-6/12"
-          />
-        </div>
-
-        <div className="flex-1 overflow-y-auto flex flex-col mt-1.5 no-scrollbar">
-          <div className="h-60 flex flex-col gap-2.5">
-            {Array.from({ length: 20 }).map((_, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between px-1.5 size-5 w-full border border-ring h-auto rounded-md"
-              >
-                <strong className="ml-1">Nome do pokemon {index}</strong>
-
-                <Image
-                  width={50}
-                  height={50}
-                  src={
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/132.png"
-                  }
-                  alt="pokemon"
-                  priority
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <Suspense
+          fallback={
+            <div className="flex-1 flex items-center justify-center">
+              Loading...
+            </div>
+          }
+        >
+          <ListAttempts />
+        </Suspense>
       </div>
     </div>
   );
