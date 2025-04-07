@@ -1,57 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Separator } from "@radix-ui/react-separator";
-import { Bolt, CircleAlert, LogOut, Menu, SendHorizontal } from "lucide-react";
-import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { SendTry } from "./form";
+import Header from "./header";
 import { ListAttempts } from "./listAttempts";
 import { Tips } from "./tips";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="h-screen flex flex-col gap-4">
-      <div className="flex items-center justify-between mt-3">
-        <Sheet>
-          <SheetTrigger>
-            <Menu size={30} className="cursor-pointer" />
-          </SheetTrigger>
-
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Detalhes</SheetTitle>
-            </SheetHeader>
-
-            <div className="flex flex-col gap-5 mx-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Button variant="outline" className="cursor-pointer w-max">
-                  <span className="text-slate-400">Como Jogar</span>
-                  <CircleAlert size={25} className="text-slate-400" />
-                </Button>
-
-                <Button variant="outline" className="cursor-pointer w-max">
-                  <span className="text-slate-400">Configurações</span>
-                  <Bolt size={25} className="text-slate-400" />
-                </Button>
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
-
-        <LogOut className="cursor-pointer" size={25} />
-      </div>
+      <Header />
 
       <SendTry />
 
       <div className="flex-1 flex flex-col gap-2">
-        {/* <Suspense
+        <Suspense
           fallback={
             <div className="flex-1 flex items-center justify-center">
               Loading...
@@ -59,14 +21,17 @@ export default function Home() {
           }
         >
           <Tips />
-        </Suspense> */}
+        </Suspense>
 
         <Suspense
-          fallback={
-            <div className="flex-1 flex items-center justify-center">
-              Loading...
-            </div>
-          }
+          fallback={Array.from({ length: 20 }).map((_, index) => {
+            return (
+              <Skeleton
+                key={index}
+                className="w-full h-[50px] border border-ring rounded-m"
+              />
+            );
+          })}
         >
           <ListAttempts />
         </Suspense>

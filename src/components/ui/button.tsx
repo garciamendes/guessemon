@@ -3,6 +3,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import type * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { LoaderCircle } from "lucide-react";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -35,17 +36,35 @@ const buttonVariants = cva(
   }
 );
 
+interface ButtonProps
+  extends React.ComponentProps<"button">,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+  loading?: boolean;
+}
+
 function Button({
   className,
   variant,
   size,
   asChild = false,
+  loading = false,
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
+}: ButtonProps) {
   const Comp = asChild ? Slot : "button";
+
+  if (loading) {
+    return (
+      <Comp
+        data-slot="button"
+        disabled={loading}
+        className={cn(buttonVariants({ variant, size, className }))}
+        {...props}
+      >
+        <LoaderCircle className="animate-spin h-[20px]" />
+      </Comp>
+    );
+  }
 
   return (
     <Comp
